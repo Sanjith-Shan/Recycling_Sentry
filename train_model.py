@@ -10,6 +10,9 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
+import ssl
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 DATA_DIR = "data"
 MODEL_SAVE_PATH = "waste_classifier.pth"
