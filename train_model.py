@@ -105,7 +105,7 @@ def create_model(num_classes, class_weights):
     ])
     
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode='max', factor=0.5, patience=3, verbose=True
+        optimizer, mode='max', factor=0.5, patience=3
     )
     
     return model, criterion, optimizer, scheduler
@@ -177,7 +177,11 @@ def train_model(model, dataloaders, dataset_sizes, criterion, optimizer, schedul
             model, dataloaders['val'], criterion, dataset_sizes['val']
         )
         
+        old_lr = optimizer.param_groups[0]['lr']
         scheduler.step(val_acc)
+        new_lr = optimizer.param_groups[0]['lr']
+        if new_lr != old_lr:
+            print(f'Learning rate reduced: {old_lr:.6f} -> {new_lr:.6f}')
         
         history['train_loss'].append(train_loss)
         history['train_acc'].append(train_acc.item())
